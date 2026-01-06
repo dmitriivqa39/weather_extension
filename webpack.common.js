@@ -1,69 +1,67 @@
-const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
-const HtmlPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const path = require('path')
+const copyPlugin = require('copy-webpack-plugin')
+const htmlPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: {
     popup: path.resolve('src/popup/popup.tsx'),
     options: path.resolve('src/options/options.tsx'),
-    background: path.resolve('src/background/background.ts'),
-    contentScript: path.resolve('src/contentScript/contentScript.ts'),
+    background: path.resolve('src/background_script/background.ts'),
+    contentScript: path.resolve('src/content_script/contentScript.ts'),
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
         use: 'ts-loader',
+        test: /\.tsx?$/,
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
+        test: /\.css$/i,
       },
       {
-        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
-        type: 'asset/resource'
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+        type: 'asset/resource',
+        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/i,
+      },
+    ],
   },
   plugins: [
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: false,
     }),
-    new CopyPlugin({
+    new copyPlugin({
       patterns: [
         {
           from: path.resolve('src/static'),
           to: path.resolve('dist'),
-        }
-      ]
+        },
+      ],
     }),
-    ...getHtmlPlugins([
-      'popup',
-      'options'
-    ]),
+    ...getHTMLPlugins(['popup', 'options']),
   ],
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
   output: {
     filename: '[name].js',
-    path: path.resolve('dist'),
+    path: path.resolve(__dirname, 'dist'),
   },
   optimization: {
     splitChunks: {
-      chunks(chunk) {
-        return chunk.name !== 'contentScript' && chunk.name !== 'background'
-      }
+      chunks: 'all',
     },
-  }
+  },
 }
 
-function getHtmlPlugins(chunks) {
-  return chunks.map(chunk => new HtmlPlugin({
-    title: 'React Extension',
-    filename: `${chunk}.html`,
-    chunks: [chunk],
-  }))
+function getHTMLPlugins(chunks) {
+  return chunks.map(
+    (chunk) =>
+      new htmlPlugin({
+        title: 'React Extension',
+        filename: `${chunk}.html`,
+        chunks: [chunk],
+      }),
+  )
 }

@@ -1,15 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from "react";
+import { createRoot } from "react-dom/client";
 import './options.css'
 
-const App: React.FC<{}> = () => {
-  return (
-    <div>
-      <img src="icon.png" />
-    </div>
-  )
-}
+const test = <img src='icon.png'></img>;
 
-const root = document.createElement('div')
-document.body.appendChild(root)
-ReactDOM.render(<App />, root)
+const root = document.createElement("div");
+document.body.appendChild(root);
+
+createRoot(root).render(test);

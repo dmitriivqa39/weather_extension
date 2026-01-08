@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { fetchOpenWeatherData, openWeatherData } from '../../utils/api'
+import { fetchOpenWeatherData, openWeatherData, openWeatherTempScale } from '../../utils/api'
 import { Card, Button, CardContent, Typography, Box, CardActions } from '@mui/material'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -27,19 +27,20 @@ type WeatherCardState = 'loading' | 'error' | 'ready'
 
 const WeatherCard: React.FC<{
     city: string
+    tempScale: openWeatherTempScale
     onDelete?: () => void
-}> = ({ city, onDelete }) => {
+}> = ({ city, tempScale, onDelete }) => {
     const [weatherData, setWeatherData] = useState<openWeatherData | null>(null)
     const [cardState, setCardState] = useState<WeatherCardState>('loading')
 
     useEffect(() => {
-            fetchOpenWeatherData(city)
+            fetchOpenWeatherData(city, tempScale)
             .then((data) => {
                     setWeatherData(data)
                     setCardState("ready")
 
             }).catch((err) => setCardState("error"))
-        }, [city])
+        }, [city, tempScale])
 
         if (cardState == 'loading' || cardState == 'error') {
             return <WeatherCardContainer onDelete={onDelete}>

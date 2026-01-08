@@ -8,17 +8,24 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import { Paper, InputBase, IconButton, Box, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'
-import { setStoredCities, getStoredCities } from "../utils/storage"
+import {
+    setStoredCities,
+    setStoredOptions,
+    getStoredCities,
+    getStoredOption,
+    LocalStorageOptions
+} from "../utils/storage"
 
 
 const App: React.FC<{}> = () => {
 
     const [cities, setCities] = useState<string[]>([])
-
     const [cityInput, setCityInput] = useState<string>('')
+    const [options, setOptions] = useState<LocalStorageOptions | null>(null)
 
     useEffect(() => {
         getStoredCities().then(cities => setCities(cities))
+        getStoredOption().then(options => setOptions(options))
     }, [])
 
     const handleCityButtonClick = () => {
@@ -40,9 +47,23 @@ const App: React.FC<{}> = () => {
         })
     }
 
+    const handleTempScaleButtonClick = () => {
+        const updatedOptions: LocalStorageOptions = {
+            ...options,
+            tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric'
+        }
+        setStoredOptions(updatedOptions).then(() => {
+            setOptions(updatedOptions)
+        })
+    }
+
+    if (!options) {
+        return null
+    }
+
     return (
     <Box mx='8px' my='16px'> 
-    <Grid container >
+    <Grid container justifyContent="space-evenly">
         <Paper>
                 <Box px='15px' py='5px'>
                     <InputBase placeholder="Add a city name"
@@ -54,9 +75,19 @@ const App: React.FC<{}> = () => {
                     </IconButton>
                 </Box>
             </Paper>
+        <Grid>
+            <Paper>
+                <Box px='5px' py='5px'>
+                    <IconButton onClick={handleTempScaleButtonClick}>
+                        {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+                    </IconButton>
+                </Box>
+            </Paper>
+        </Grid>
             </Grid>
         {
-            cities.map((city, index) => <WeatherCard city={city} key={index} onDelete={() => handleCityDeleteButtonClick(index)} />)
+            cities.map((city, index) =>
+                <WeatherCard city={city} key={index} tempScale={options.tempScale} onDelete={() => handleCityDeleteButtonClick(index)} />)
         } 
          <Box height='16px' />
     </Box>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { fetchOpenWeaterData, openWeaterData } from '../../utils/api'
+import { fetchOpenWeatherData, openWeatherData } from '../../utils/api'
 import { Card, Button, CardContent, Typography, Box, CardActions } from '@mui/material'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -29,11 +29,11 @@ const WeatherCard: React.FC<{
     city: string
     onDelete?: () => void
 }> = ({ city, onDelete }) => {
-    const [weatherData, setWeatherData] = useState<openWeaterData | null>(null)
+    const [weatherData, setWeatherData] = useState<openWeatherData | null>(null)
     const [cardState, setCardState] = useState<WeatherCardState>('loading')
 
     useEffect(() => {
-            fetchOpenWeaterData(city)
+            fetchOpenWeatherData(city)
             .then((data) => {
                     setWeatherData(data)
                     setCardState("ready")
@@ -54,8 +54,8 @@ const WeatherCard: React.FC<{
         return (
             <WeatherCardContainer onDelete={onDelete}>
                 <Typography variant="h5">{weatherData.name}</Typography>
-                <Typography variant="body1">Температура сейчас: {Math.round(weatherData.main.temp)}</Typography>
-                <Typography variant="body1">Ощущается: {Math.round(weatherData.main.feels_like)}</Typography>
+                <Typography variant="body1">Temperature now: {Math.round(weatherData.main.temp)}</Typography>
+                <Typography variant="body1">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
             </WeatherCardContainer>
         )
 }

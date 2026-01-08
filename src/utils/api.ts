@@ -1,6 +1,6 @@
-const OPEN_WEATER_API_KEY = ''
+const OPEN_WEATHER_API_KEY = ''
 
-export interface openWeaterData {
+export interface openWeatherData {
   name: string
   main: {
     feels_like: number
@@ -22,9 +22,11 @@ export interface openWeaterData {
   }
 }
 
-export async function fetchOpenWeaterData(city: string): Promise<openWeaterData> {
+export type openWeatherTempScale = 'metric' | 'imperial'
+
+export async function fetchOpenWeatherData(city: string): Promise<openWeatherData> {
   const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${OPEN_WEATER_API_KEY}`,
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${OPEN_WEATHER_API_KEY}`,
   )
 
   if (!res.ok) {

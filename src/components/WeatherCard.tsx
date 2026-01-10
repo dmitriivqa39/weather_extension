@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { fetchOpenWeatherData, openWeatherData, openWeatherTempScale } from '../../utils/api'
+import { fetchOpenWeatherData, openWeatherData, openWeatherTempScale } from '../utils/api'
 import { Card, Button, CardContent, Typography, Box, CardActions } from '@mui/material'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'

@@ -5,7 +5,7 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
-import { Card, CardContent, Typography, TextField, Grid, Box, Button } from '@mui/material'
+import { Card, CardContent, Typography, TextField, Grid, Box, Button, Switch } from '@mui/material'
 import {
     getStoredOption, LocalStorageOptions, setStoredOptions
 } from "../utils/storage";
@@ -23,6 +23,13 @@ const App: React.FC<{}> = () => {
         setOptions({
             ...options,
             homeCity,
+        })
+    }
+
+    const handleAutoOverlayChange = (hasAutoOverlay: boolean) => {
+        setOptions({
+            ...options,
+            hasAutoOverlay,
         })
     }
 
@@ -60,6 +67,16 @@ const App: React.FC<{}> = () => {
                                    onChange={event =>
                                        handleHomeCityChange(event.target.value)}
                                    disabled={isFieldsDisabled} />
+                    </Grid>
+                    <Grid>
+                        <Typography variant="body1">
+                            Auto toggle overlay on webpage load
+                        </Typography>
+                        <Switch color="primary"
+                                checked={options.hasAutoOverlay}
+                                onChange={(event, checked) => handleAutoOverlayChange(checked)}
+                                disabled={isFieldsDisabled}
+                        />
                     </Grid>
                     <Grid>
                         <Button variant="contained" color="primary"

@@ -1,4 +1,4 @@
-const OPEN_WEATHER_API_KEY = '4d8ee5563de3dfdf772e76d2859daca8'
+const OPEN_WEATHER_API_KEY = ''
 
 export interface openWeatherData {
   name: string
@@ -34,4 +34,8 @@ export async function fetchOpenWeatherData(city: string, tempScale: openWeatherT
   }
 
   return await res.json()
+}
+
+export function getWeatherIconSrc(iconCode: string) {
+  return `https://openweathermap.org/img/wn/${iconCode}@2x.png`
 }

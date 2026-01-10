@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { fetchOpenWeatherData, openWeatherData, openWeatherTempScale } from '../utils/api'
-import { Card, Button, CardContent, Typography, Box, CardActions } from '@mui/material'
+import {fetchOpenWeatherData, getWeatherIconSrc, openWeatherData, openWeatherTempScale} from '../utils/api'
+import { Card, Button, CardContent, Typography, Box, CardActions, Grid } from '@mui/material'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
@@ -60,9 +60,20 @@ const WeatherCard: React.FC<{
 
         return (
             <WeatherCardContainer onDelete={onDelete}>
-                <Typography className="weatherCard-title">{weatherData.name}</Typography>
-                <Typography className="weatherCard-body">Temperature now: {Math.round(weatherData.main.temp)}</Typography>
-                <Typography className="weatherCard-body">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
+                <Grid container justifyContent='space-around'>
+                    <Grid>
+                        <Typography className="weatherCard-title">{weatherData.name}</Typography>
+                        <Typography className="weatherCard-temp">{Math.round(weatherData.main.temp)}</Typography>
+                        <Typography className="weatherCard-body">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
+                    </Grid>
+                    <Grid>
+                        {
+                            weatherData.weather.length > 0 && <>
+                                <img src={getWeatherIconSrc(weatherData.weather[0].icon)}/>
+                                <Typography className="weatherCard-body">{weatherData.weather[0].main}</Typography>
+                            </>}
+                    </Grid>
+                </Grid>
             </WeatherCardContainer>
         )
 }

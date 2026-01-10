@@ -5,6 +5,7 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+import './WeatherCard.css'
 
 
 const WeatherCardContainer: React.FC<{
@@ -16,7 +17,11 @@ const WeatherCardContainer: React.FC<{
                 <CardContent> {children} </CardContent>
                 <CardActions>
                     {
-                        onDelete &&  <Button color="error" onClick={onDelete}>Delete</Button>
+                        onDelete &&  <Button color="error" onClick={onDelete}>
+                            <Typography className="weatherCard-body">
+                                Delete
+                            </Typography>
+                        </Button>
                     }
                 </CardActions>
             </Card>
@@ -43,20 +48,21 @@ const WeatherCard: React.FC<{
         }, [city, tempScale])
 
         if (cardState == 'loading' || cardState == 'error') {
-            return <WeatherCardContainer onDelete={onDelete}>
-                <Typography variant="body1">
+            return (<WeatherCardContainer onDelete={onDelete}>
+                <Typography className="weatherCard-title">{city}</Typography>
+                <Typography className="weatherCard-body">
                     {
                         cardState == 'loading' ? 'Loading...' : 'Error: Could not retrieve weather data for this city'
                     }
                 </Typography>
-                </WeatherCardContainer>
+                </WeatherCardContainer>)
         }
 
         return (
             <WeatherCardContainer onDelete={onDelete}>
-                <Typography variant="h5">{weatherData.name}</Typography>
-                <Typography variant="body1">Temperature now: {Math.round(weatherData.main.temp)}</Typography>
-                <Typography variant="body1">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
+                <Typography className="weatherCard-title">{weatherData.name}</Typography>
+                <Typography className="weatherCard-body">Temperature now: {Math.round(weatherData.main.temp)}</Typography>
+                <Typography className="weatherCard-body">Feels like: {Math.round(weatherData.main.feels_like)}</Typography>
             </WeatherCardContainer>
         )
 }

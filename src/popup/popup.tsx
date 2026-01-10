@@ -8,6 +8,9 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import { Paper, InputBase, IconButton, Box, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add'
+import PictureInPictureIcon from '@mui/icons-material/PictureInPicture';
+import { Messages} from "../utils/messages";
+
 import {
     setStoredCities,
     setStoredOptions,
@@ -57,6 +60,18 @@ const App: React.FC<{}> = () => {
         })
     }
 
+    const handleOverlayButtonClick = () => {
+        chrome.tabs.query(
+            {
+            active: true,
+            },
+            (tabs) => {
+            if (tabs.length > 0) {
+                chrome.tabs.sendMessage(tabs[0].id, Messages.TOGGLE_OVERLAY)
+            }
+        })
+    }
+
     if (!options) {
         return null
     }
@@ -80,6 +95,15 @@ const App: React.FC<{}> = () => {
                 <Box px='5px' py='5px'>
                     <IconButton onClick={handleTempScaleButtonClick}>
                         {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+                    </IconButton>
+                </Box>
+            </Paper>
+        </Grid>
+        <Grid>
+            <Paper>
+                <Box px='5px' py='5px'>
+                    <IconButton onClick={handleOverlayButtonClick}>
+                       <PictureInPictureIcon />
                     </IconButton>
                 </Box>
             </Paper>
